@@ -1,3 +1,19 @@
 #index:
 #    path: /
 #    controller: App\Controller\DefaultController::index
+index:
+    path: /
+    controller: App\Controller\HomeController::index
+# eventlist:
+#     path: /eventlist
+#     controller: App\Controller\EventlistController::index
+# eventdisplay:
+#     path: /eventdisplay
+#     controller: App\Controller\EventdisplayController::show
+#     requirements: id="\d+"
+# eventcreate:
+#     path: /eventcreate
+#     controller: App\Controller\EventcreateController::index
+# eventjoin:
+#     path: /eventjoin
+#     controller: App\Controller\EventjoinController::index
