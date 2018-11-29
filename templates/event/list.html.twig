@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() }}{% endblock %}
+
+{% block body %}
+    <h4>{{ title }}</h4>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-1">Pastille</div>
+            <div class="col-1">Id</div>
+            <div class="col-2">Titre</div>
+            <div class="col-4">Description</div>
+            <div class="col-2">Début</div>
+            <div class="col-2">Fin</div>
+        </div>
+        {% for event in events %}
+            <div class="row">
+                <div class="col-1">
+                {% if date(event.start_date) <= date() and date(event.end_date) >= date() %}
+                    <span>En cours<span>
+                {% elseif date(event.start_date) < date() %}
+                    <span>Passé</span>
+                {% else %}
+                    <span>Futur</span>
+                {% endif %}
+                </div>
+                <div class="col-1">{{ event.id }}</div>
+                <div class="col-2">
+                    <a href="{{ path('show', {id: event.id}) }}">{{ event.title }}</a>
+                </div>
+                <div class="col-4">{{ event.description }}</div>
+                <div class="col-2">{{ event.start_date }}</div>
+                <div class="col-2">{{ event.end_date }}</div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
