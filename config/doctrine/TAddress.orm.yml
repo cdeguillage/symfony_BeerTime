@@ -1,0 +1,44 @@
+App\Entity\TAddress:
+    type: entity
+    table: t_address
+    id:
+        idaddress:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        name:
+            type: string
+            nullable: false
+            length: 255
+            options:
+                fixed: false
+        street:
+            type: string
+            nullable: false
+            length: 255
+            options:
+                fixed: false
+        zipcode:
+            type: string
+            nullable: false
+            length: 10
+            options:
+                fixed: false
+        town:
+            type: string
+            nullable: false
+            length: 255
+            options:
+                fixed: false
+        country:
+            type: string
+            nullable: false
+            length: 255
+            options:
+                fixed: false
+    lifecycleCallbacks: {  }

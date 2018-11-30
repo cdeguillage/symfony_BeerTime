@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="App\Entity\TParticipant" table="t_participant">
+    <indexes>
+      <index name="fk_t_event_has_t_user_t_user1" columns="iduser"/>
+      <index name="fk_t_participant_t_tags1" columns="idtag"/>
+      <index name="IDX_87CE4F10EDAB66BE" columns="idevent"/>
+    </indexes>
+    <id name="idevent" association-key="true"/>
+    <id name="iduser" association-key="true"/>
+    <field name="bookingnumber" type="string" column="bookingnumber" length="255" nullable="false">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <one-to-one field="idevent" target-entity="TEvent" fetch="LAZY">
+      <join-columns>
+        <join-column name="idevent" referenced-column-name="idevent"/>
+      </join-columns>
+    </one-to-one>
+    <one-to-one field="iduser" target-entity="TUser" fetch="LAZY">
+      <join-columns>
+        <join-column name="iduser" referenced-column-name="iduser"/>
+      </join-columns>
+    </one-to-one>
+    <many-to-one field="idtag" target-entity="TTags" fetch="LAZY">
+      <join-columns>
+        <join-column name="idtag" referenced-column-name="idtag"/>
+      </join-columns>
+    </many-to-one>
+  </entity>
+</doctrine-mapping>

@@ -1,0 +1,58 @@
+App\Entity\TParticipant:
+    type: entity
+    table: t_participant
+    indexes:
+        fk_t_event_has_t_user_t_user1:
+            columns:
+                - iduser
+        fk_t_participant_t_tags1:
+            columns:
+                - idtag
+        IDX_87CE4F10EDAB66BE:
+            columns:
+                - idevent
+    id:
+        idevent:
+            associationKey: true
+        iduser:
+            associationKey: true
+    fields:
+        bookingnumber:
+            type: string
+            nullable: false
+            length: 255
+            options:
+                fixed: false
+    oneToOne:
+        idevent:
+            targetEntity: TEvent
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                idevent:
+                    referencedColumnName: idevent
+            orphanRemoval: false
+        iduser:
+            targetEntity: TUser
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                iduser:
+                    referencedColumnName: iduser
+            orphanRemoval: false
+    manyToOne:
+        idtag:
+            targetEntity: TTags
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                idtag:
+                    referencedColumnName: idtag
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

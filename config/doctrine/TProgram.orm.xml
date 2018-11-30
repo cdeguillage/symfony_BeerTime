@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="App\Entity\TProgram" table="t_program">
+    <indexes>
+      <index name="fk_t_program_t_event1" columns="idevent"/>
+    </indexes>
+    <id name="idprogram" type="integer" column="idprogram"/>
+    <id name="title" type="string" column="title" length="255"/>
+    <field name="description" type="string" column="description" length="255" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="timeperiodStart" type="string" column="timeperiod_start" length="45" nullable="false">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="timeperiodEnd" type="string" column="timeperiod_end" length="45" nullable="false">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="price" type="decimal" column="price" precision="5" scale="2" nullable="true">
+      <options>
+        <option name="default">0.00</option>
+      </options>
+    </field>
+    <many-to-one field="idevent" target-entity="TEvent" fetch="LAZY">
+      <join-columns>
+        <join-column name="idevent" referenced-column-name="idevent"/>
+      </join-columns>
+    </many-to-one>
+  </entity>
+</doctrine-mapping>

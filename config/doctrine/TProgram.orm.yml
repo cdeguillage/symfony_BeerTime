@@ -1,0 +1,61 @@
+App\Entity\TProgram:
+    type: entity
+    table: t_program
+    indexes:
+        fk_t_program_t_event1:
+            columns:
+                - idevent
+    id:
+        idprogram:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            id: true
+        title:
+            type: string
+            nullable: false
+            length: 255
+            options:
+                fixed: false
+            id: true
+    fields:
+        description:
+            type: string
+            nullable: true
+            length: 255
+            options:
+                fixed: false
+        timeperiodStart:
+            type: string
+            nullable: false
+            length: 45
+            options:
+                fixed: false
+            column: timeperiod_start
+        timeperiodEnd:
+            type: string
+            nullable: false
+            length: 45
+            options:
+                fixed: false
+            column: timeperiod_end
+        price:
+            type: decimal
+            nullable: true
+            precision: 5
+            scale: 2
+            options:
+                default: '0.00'
+    manyToOne:
+        idevent:
+            targetEntity: TEvent
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                idevent:
+                    referencedColumnName: idevent
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

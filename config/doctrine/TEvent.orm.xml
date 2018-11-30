@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="App\Entity\TEvent" table="t_event">
+    <indexes>
+      <index name="fk_t_event_t_address" columns="idaddress"/>
+      <index name="fk_t_event_t_user1" columns="idusercreate"/>
+    </indexes>
+    <id name="idevent" type="integer" column="idevent">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="name" type="string" column="name" length="255" nullable="false">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="description" type="string" column="description" length="255" nullable="false">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="dateeventStart" type="datetime" column="dateevent_start" nullable="false"/>
+    <field name="dateeventEnd" type="datetime" column="dateevent_end" nullable="false"/>
+    <field name="price" type="decimal" column="price" precision="5" scale="2" nullable="true">
+      <options>
+        <option name="default">0.00</option>
+      </options>
+    </field>
+    <field name="createddate" type="datetime" column="createddate" nullable="false">
+      <options>
+        <option name="default">CURRENT_TIMESTAMP</option>
+      </options>
+    </field>
+    <many-to-one field="idaddress" target-entity="TAddress" fetch="LAZY">
+      <join-columns>
+        <join-column name="idaddress" referenced-column-name="idaddress"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="idusercreate" target-entity="TUser" fetch="LAZY">
+      <join-columns>
+        <join-column name="idusercreate" referenced-column-name="iduser"/>
+      </join-columns>
+    </many-to-one>
+  </entity>
+</doctrine-mapping>

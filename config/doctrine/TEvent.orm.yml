@@ -1,0 +1,74 @@
+App\Entity\TEvent:
+    type: entity
+    table: t_event
+    indexes:
+        fk_t_event_t_address:
+            columns:
+                - idaddress
+        fk_t_event_t_user1:
+            columns:
+                - idusercreate
+    id:
+        idevent:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        name:
+            type: string
+            nullable: false
+            length: 255
+            options:
+                fixed: false
+        description:
+            type: string
+            nullable: false
+            length: 255
+            options:
+                fixed: false
+        dateeventStart:
+            type: datetime
+            nullable: false
+            column: dateevent_start
+        dateeventEnd:
+            type: datetime
+            nullable: false
+            column: dateevent_end
+        price:
+            type: decimal
+            nullable: true
+            precision: 5
+            scale: 2
+            options:
+                default: '0.00'
+        createddate:
+            type: datetime
+            nullable: false
+            options:
+                default: CURRENT_TIMESTAMP
+    manyToOne:
+        idaddress:
+            targetEntity: TAddress
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                idaddress:
+                    referencedColumnName: idaddress
+            orphanRemoval: false
+        idusercreate:
+            targetEntity: TUser
+            cascade: {  }
+            fetch: LAZY
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                idusercreate:
+                    referencedColumnName: iduser
+            orphanRemoval: false
+    lifecycleCallbacks: {  }
