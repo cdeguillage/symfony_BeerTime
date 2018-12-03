@@ -33,11 +33,11 @@ App\Entity\TEvent:
         dateeventStart:
             type: datetime
             nullable: false
-            column: dateevent_start
+            column: dateeventstart
         dateeventEnd:
             type: datetime
             nullable: false
-            column: dateevent_end
+            column: dateeventend
         price:
             type: decimal
             nullable: true

@@ -2,13 +2,15 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * TProgram
  *
  * @ORM\Table(name="t_program", indexes={@ORM\Index(name="fk_t_program_t_event1", columns={"idevent"})})
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\TProgramRepository")
  */
 class TProgram
 {
@@ -40,14 +42,14 @@ class TProgram
     /**
      * @var string
      *
-     * @ORM\Column(name="timeperiod_start", type="string", length=45, nullable=false)
+     * @ORM\Column(name="timeperiodStart", type="string", length=45, nullable=false)
      */
     private $timeperiodStart;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="timeperiod_end", type="string", length=45, nullable=false)
+     * @ORM\Column(name="timeperiodEnd", type="string", length=45, nullable=false)
      */
     private $timeperiodEnd;
 
@@ -61,7 +63,7 @@ class TProgram
     /**
      * @var \TEvent
      *
-     * @ORM\ManyToOne(targetEntity="TEvent")
+     * @ORM\ManyToOne(targetEntity="App\Entity\TEvent")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="idevent", referencedColumnName="idevent")
      * })

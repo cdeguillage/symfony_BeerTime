@@ -2,28 +2,31 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * TUser
  *
  * @ORM\Table(name="t_user")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\TUserRepository")
  */
 class TUser
 {
     /**
      * @var int
      *
+     * @ORM\OneToOne(targetEntity="App\Entity\TEvent", inversedBy="iduser")
      * @ORM\Column(name="iduser", type="integer", nullable=false)
-     * @ORM\Id
+     * @ORM\Id()
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $iduser;
 
     /**
      * @var string
-     *
+     * 
      * @ORM\Column(name="username", type="string", length=255, nullable=false)
      */
     private $username;
@@ -54,7 +57,7 @@ class TUser
      *
      * @ORM\Column(name="roles", type="array", length=0, nullable=false)
      */
-    private $roles;
+    private $roles = [];
 
     /**
      * @var bool
@@ -62,6 +65,11 @@ class TUser
      * @ORM\Column(name="connected", type="boolean", nullable=false)
      */
     private $connected = '0';
+
+
+    public function __constructor() {
+        // 
+    }
 
     public function getIduser(): ?int
     {

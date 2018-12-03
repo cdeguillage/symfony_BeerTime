@@ -40,14 +40,14 @@ class TEvent
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="dateevent_start", type="datetime", nullable=false)
+     * @ORM\Column(name="dateeventstart", type="datetime", nullable=false)
      */
     private $dateeventStart;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="dateevent_end", type="datetime", nullable=false)
+     * @ORM\Column(name="dateeventend", type="datetime", nullable=false)
      */
     private $dateeventEnd;
 
@@ -68,7 +68,7 @@ class TEvent
     /**
      * @var \TAddress
      *
-     * @ORM\ManyToOne(targetEntity="TAddress")
+     * @ORM\ManyToOne(targetEntity="App\Entity\TAddress")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="idaddress", referencedColumnName="idaddress")
      * })
@@ -78,19 +78,25 @@ class TEvent
     /**
      * @var \TUser
      *
-     * @ORM\ManyToOne(targetEntity="TUser")
+     * @ORM\OneToOne(targetEntity="App\Entity\TUser", mappedBy="idusercreate")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="idusercreate", referencedColumnName="iduser")
      * })
      */
     private $idusercreate;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="event", orphanRemoval=true)
+     */
+    private $comments;
 
-    // public function __construct()
-    // {
-    //     $this->tags = new ArrayCollection();
-    //     $this->participations = new ArrayCollection();
-    // }
+
+    public function __construct()
+    {
+        $this->idaddress = new ArrayCollection();
+        $this->idusercreate = new ArrayCollection();
+        $this->comments = new ArrayCollection();
+    }
 
     public function getIdevent(): ?int
     {
@@ -189,6 +195,37 @@ class TEvent
     public function setIdusercreate(?TUser $idusercreate): self
     {
         $this->idusercreate = $idusercreate;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Comment[]
+     */
+    public function getComments(): Collection
+    {
+        return $this->comments;
+    }
+
+    public function addComment(Comment $comment): self
+    {
+        if (!$this->comments->contains($comment)) {
+            $this->comments[] = $comment;
+            $comment->setEvent($this);
+        }
+
+        return $this;
+    }
+
+    public function removeComment(Comment $comment): self
+    {
+        if ($this->comments->contains($comment)) {
+            $this->comments->removeElement($comment);
+            // set the owning side to null (unless already changed)
+            if ($comment->getEvent() === $this) {
+                $comment->setEvent(null);
+            }
+        }
 
         return $this;
     }

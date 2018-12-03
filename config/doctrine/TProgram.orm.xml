@@ -11,12 +11,12 @@
         <option name="fixed"/>
       </options>
     </field>
-    <field name="timeperiodStart" type="string" column="timeperiod_start" length="45" nullable="false">
+    <field name="timeperiodStart" type="string" column="timeperiodstart" length="45" nullable="false">
       <options>
         <option name="fixed"/>
       </options>
     </field>
-    <field name="timeperiodEnd" type="string" column="timeperiod_end" length="45" nullable="false">
+    <field name="timeperiodEnd" type="string" column="timeperiodend" length="45" nullable="false">
       <options>
         <option name="fixed"/>
       </options>

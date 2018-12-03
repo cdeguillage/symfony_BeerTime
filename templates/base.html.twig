@@ -25,10 +25,22 @@
                         <a class="nav-item nav-link" href="{{ path('create') }}">Créer un événement</a>
                     </div>
                 </div>
+                <form method="GET" action="{{ path('list') }}" class="form-inline my-2 my-lg-0">
+                    <input class="form-control mr-sm-2" type="text" placeholder="Evénement, ..." name="querySearch">
+                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Chercher</button>
+                </form>
             </nav>
         {% endblock %}
 
-        <img src="{{ asset('assets/img/background.jpg') }}" alt="BeerTime"></img>
+        <div class="container">
+            <div class="row">
+                <div class="col-1">
+                    <img src="{{ asset('assets/img/background.jpg') }}" class="beer-lego" alt="BeerTime"></img>
+                </div>
+                <div class="col-11">
+                    {% block displayArray %} {% endblock %}
+                </div>
+        </div>
 
         {% block body %}{% endblock %}
 

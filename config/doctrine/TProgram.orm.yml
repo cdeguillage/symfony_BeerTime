@@ -32,14 +32,14 @@ App\Entity\TProgram:
             length: 45
             options:
                 fixed: false
-            column: timeperiod_start
+            column: timeperiodstart
         timeperiodEnd:
             type: string
             nullable: false
             length: 45
             options:
                 fixed: false
-            column: timeperiod_end
+            column: timeperiodend
         price:
             type: decimal
             nullable: true

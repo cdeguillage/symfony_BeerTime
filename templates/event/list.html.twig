@@ -2,7 +2,9 @@
 
 {% block title %}{{ parent() }}{% endblock %}
 
-{% block body %}
+{% block displayArray %}
+    {{ dump(events) }}
+    <br /><br />
     <h4>{{ title }}</h4>
 
     <div class="container">
@@ -10,29 +12,40 @@
             <div class="col-1">Pastille</div>
             <div class="col-1">Id</div>
             <div class="col-2">Titre</div>
-            <div class="col-4">Description</div>
-            <div class="col-2">Début</div>
+            <div class="col-3">Description</div>
+            <div class="col-2"><a href="?sort=date">Début</a></div>
             <div class="col-2">Fin</div>
+            <div class="col-1"><a href="?sort=price">Prix</a></div>
         </div>
         {% for event in events %}
             <div class="row">
                 <div class="col-1">
-                {% if date(event.start_date) <= date() and date(event.end_date) >= date() %}
-                    <span>En cours<span>
-                {% elseif date(event.start_date) < date() %}
-                    <span>Passé</span>
+                    {% if date(event.dateeventStart) <= date()and date(event.dateeventEnd) >= date() %}
+                    En cours
+                    {% elseif date(event.dateeventStart) < date() %}
+                    Passé
                 {% else %}
-                    <span>Futur</span>
+                    Futur
                 {% endif %}
                 </div>
-                <div class="col-1">{{ event.id }}</div>
+                <div class="col-1">{{ event.idevent }}</div>
                 <div class="col-2">
-                    <a href="{{ path('show', {id: event.id}) }}">{{ event.title }}</a>
+                    <a href="{{ path('show', {id: event.idevent}) }}">{{ event.name }}</a>
                 </div>
-                <div class="col-4">{{ event.description }}</div>
-                <div class="col-2">{{ event.start_date }}</div>
-                <div class="col-2">{{ event.end_date }}</div>
+                <div class="col-3">{{ event.description }}</div>
+                <div class="col-2">{{ date(event.dateeventStart) | date('Y-m-d') }}</div>
+                <div class="col-2">{{ date(event.dateeventEnd) | date('Y-m-d') }}</div>
+                <div class="col-1">{{ event.price }}</div>
             </div>
         {% endfor %}
+        {# PAGINATION #}
+        <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            {# <li class="page-item"><a class="page-link" href="#">Previous</a></li> #}
+            <li class="page-item"><a class="page-link" href="?page=1">1</a></li>
+            <li class="page-item"><a class="page-link" href="?page=2">2</a></li>
+            {# <li class="page-item"><a class="page-link" href="#">Next</a></li> #}
+        </ul>
+        </nav>
     </div>
 {% endblock %}

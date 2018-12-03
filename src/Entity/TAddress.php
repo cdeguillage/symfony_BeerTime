@@ -2,21 +2,23 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * TAddress
  *
  * @ORM\Table(name="t_address")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\TAddressRepository")
  */
 class TAddress
 {
     /**
      * @var int
-     *
+     * @ORM\OneToMany(targetEntity="App\Entity\TEvent", mappedBy="idaddress")
      * @ORM\Column(name="idaddress", type="integer", nullable=false)
-     * @ORM\Id
+     * @ORM\Id()
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $idaddress;

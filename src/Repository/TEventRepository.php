@@ -42,4 +42,34 @@ class TEventRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function search( string $name, string $sort, int $page ) {
+
+        $stmt = $this->createQueryBuilder('e');
+        $stmt->andWhere('e.name LIKE :bind')
+             ->setParameter(':bind', '%'.$name.'%')
+             ->setFirstResult(($page-1) * 2)
+             ->setMaxResults(2);
+             // ->orderBy('')
+             // ->SetMaxResults('')
+
+        if ( $sort == 'price' ) {
+            $stmt->orderBy('e.price', 'ASC');
+        } elseif ( $sort == 'date') {
+            $stmt->orderBy('e.createddate', 'DESC');
+        }
+
+        return $stmt->getQuery()
+                    ->getResult();
+    }
+
+    public function counter() {
+        return $this->createQueryBuilder('e')
+            ->select('count(e)')
+            ->andWhere('e.dateeventStart > :bind')
+            ->setParameter(':bind', new \DateTime())
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
 }

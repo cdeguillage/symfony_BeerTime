@@ -2,13 +2,15 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * TParticipant
  *
  * @ORM\Table(name="t_participant", indexes={@ORM\Index(name="fk_t_event_has_t_user_t_user1", columns={"iduser"}), @ORM\Index(name="fk_t_participant_t_tags1", columns={"idtag"}), @ORM\Index(name="IDX_87CE4F10EDAB66BE", columns={"idevent"})})
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\TParticipantRepository")
  */
 class TParticipant
 {
@@ -24,7 +26,7 @@ class TParticipant
      *
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="NONE")
-     * @ORM\OneToOne(targetEntity="TEvent")
+     * @ORM\OneToOne(targetEntity="App\Entity\TEvent")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="idevent", referencedColumnName="idevent")
      * })
@@ -36,7 +38,7 @@ class TParticipant
      *
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="NONE")
-     * @ORM\OneToOne(targetEntity="TUser")
+     * @ORM\OneToOne(targetEntity="App\Entity\TUser")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="iduser", referencedColumnName="iduser")
      * })
@@ -46,7 +48,7 @@ class TParticipant
     /**
      * @var \TTags
      *
-     * @ORM\ManyToOne(targetEntity="TTags")
+     * @ORM\ManyToOne(targetEntity="App\Entity\TTags")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="idtag", referencedColumnName="idtag")
      * })

@@ -18,8 +18,8 @@
         <option name="fixed"/>
       </options>
     </field>
-    <field name="dateeventStart" type="datetime" column="dateevent_start" nullable="false"/>
-    <field name="dateeventEnd" type="datetime" column="dateevent_end" nullable="false"/>
+    <field name="dateeventStart" type="datetime" column="dateeventstart" nullable="false"/>
+    <field name="dateeventEnd" type="datetime" column="dateeventend" nullable="false"/>
     <field name="price" type="decimal" column="price" precision="5" scale="2" nullable="true">
       <options>
         <option name="default">0.00</option>

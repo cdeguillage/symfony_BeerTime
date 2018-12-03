@@ -4,10 +4,10 @@ namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 use App\Service\EventService;
-
 
 class EventController extends AbstractController
 {
@@ -29,7 +29,7 @@ class EventController extends AbstractController
     /**
      * @Route("/event/show/{id}", name="show", requirements={"id"="\d+"})
      */
-    public function show( EventService $eventService, $id )
+    public function show( EventService $eventService, string $id )
     {
         return $this->render('event/show.html.twig', [
             'title' => 'Afficher un événement',
@@ -41,18 +41,24 @@ class EventController extends AbstractController
     /**
      * @Route("/event/list", name="list")
      */
-    public function list( EventService $eventService )
+    public function list(Request $request,  EventService $eventService )
     {
+        $querySearch = empty($request->query->get('querySearch')) ? '' : $request->query->get('querySearch');
+        $querySort = empty($request->query->get('sort')) ? '' : $request->query->get('sort');
+        $queryPage = empty($request->query->get('page')) ? '' : $request->query->get('page');
+
         return $this->render('event/list.html.twig', [
             'title' => 'Lister les événements',
-            'events' => $eventService->getAll(),
+            // 'events' => $eventService->getAll(),
+            'events' => $eventService->search( $querySearch, $querySort, $queryPage ),
+            'incomingEvent' => $eventService->counter(),
         ]);
     }
 
     /**
      * @Route("/event/{id}/join", name="join", requirements={"id"="\d+"})
      */
-    public function join( EventService $eventService, $id )
+    public function join( EventService $eventService, string $id )
     {
         return $this->render('event/show.html.twig', [
             'title' => 'Rejoindre un événement',

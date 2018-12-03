@@ -55,20 +55,28 @@ class EventService {
     public function getAll() {
         $repo = $this->om->getRepository( TEvent::class );
         return $repo->findAll();
-
         // return $this->events;
     }
 
     public function getOne( $id ) {
         $repo = $this->om->getRepository( TEvent::class );
         return $repo->find( $id );
-
         // foreach ($this->events as $key => $value) {
         //     if ( $value['id'] == $id) {
         //         return $value;
         //     }
         // }
         // return null;
+    }
+
+    public function search( string $name, string $sort, int $page ) {
+        $repo = $this->om->getRepository( TEvent::class );
+        return $repo->search( $name, $sort, $page );
+    }
+
+    public function counter() {
+        $repo = $this->om->getRepository( TEvent::class );
+        return $repo->counter();
     }
 
 }
