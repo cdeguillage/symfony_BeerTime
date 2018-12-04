@@ -79,4 +79,9 @@ class EventService {
         return $repo->counter();
     }
 
+    public function countPageForPagination() {
+        $repo = $this->om->getRepository( TEvent::class );
+        return $repo->countPageForPagination();
+    }
+
 }

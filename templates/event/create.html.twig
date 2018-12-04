@@ -3,11 +3,33 @@
 {% block title %}{{ parent() }}
 {% endblock %}
 
-{% block body %}
+{% block displayArray %}
     <h4>{{ title }}</h4>
 
-    <p>Evénement ID :
-        {{ eventid }}
-    </p>
+    {{ form_start ( form ) }}
+    {# {{ form_widget ( form ) }} #}
+    <div class="container">
+        <div class="row text-center">
+            <div class="col-6">
+                {{ form_row ( form.name ) }}
+            </div>
+        </div>
+        <div class="row text-center">
+            <div class="col-3">
+                {{ form_row ( form.description ) }}
+            </div>
+            <div class="col-3">
+                {{ form_row ( form.dateeventStart ) }}
+                {{ form_row ( form.dateeventEnd ) }}
+                {{ form_row ( form.price ) }}
+            </div>
+        </div>
+        <div class="row text-center">
+            <div class="col-6">
+                <button type="submit">Ajouter un événement</button>
+            </div>
+        </div>
+    </div>
+    {{ form_end ( form ) }}
 
 {% endblock %}

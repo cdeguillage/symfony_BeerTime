@@ -11,6 +11,9 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  */
 class TEventRepository extends ServiceEntityRepository
 {
+
+    const MAX_ITEMS_PER_PAGE = 2;
+
     public function __construct(RegistryInterface $registry)
     {
         parent::__construct($registry, TEvent::class);
@@ -45,18 +48,16 @@ class TEventRepository extends ServiceEntityRepository
 
     public function search( string $name, string $sort, int $page ) {
 
-        $stmt = $this->createQueryBuilder('e');
-        $stmt->andWhere('e.name LIKE :bind')
-             ->setParameter(':bind', '%'.$name.'%')
-             ->setFirstResult(($page-1) * 2)
-             ->setMaxResults(2);
-             // ->orderBy('')
-             // ->SetMaxResults('')
+        $stmt = $this->createQueryBuilder( 'e' );
+        $stmt->andWhere( 'e.name LIKE :bind' )
+             ->setParameter( ':bind', '%'.$name.'%' )
+             ->setFirstResult( self::MAX_ITEMS_PER_PAGE * ($page-1) )
+             ->setMaxResults( self::MAX_ITEMS_PER_PAGE );
 
         if ( $sort == 'price' ) {
-            $stmt->orderBy('e.price', 'ASC');
-        } elseif ( $sort == 'date') {
-            $stmt->orderBy('e.createddate', 'DESC');
+            $stmt->orderBy( 'e.price', 'ASC' );
+        } elseif ( $sort == 'date' ) {
+            $stmt->orderBy( 'e.createddate', 'DESC' );
         }
 
         return $stmt->getQuery()
@@ -64,12 +65,16 @@ class TEventRepository extends ServiceEntityRepository
     }
 
     public function counter() {
-        return $this->createQueryBuilder('e')
-            ->select('count(e)')
-            ->andWhere('e.dateeventStart > :bind')
-            ->setParameter(':bind', new \DateTime())
+        return $this->createQueryBuilder( 'e' )
+            ->select( 'count(e)' )
+            ->andWhere( 'e.dateeventStart > :bind' )
+            ->setParameter( ':bind', new \DateTime() )
             ->getQuery()
             ->getSingleScalarResult();
+    }
+
+    public function countPageForPagination() {
+        return round( $this->counter() / self::MAX_ITEMS_PER_PAGE ) + 1;
     }
 
 }

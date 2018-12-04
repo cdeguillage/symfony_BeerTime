@@ -6,6 +6,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
+use Symfony\Component\Validator\Constraints as Assert;
+
 /**
  * TEvent
  *
@@ -25,21 +27,31 @@ class TEvent
 
     /**
      * @var string
-     *
+     * @Assert\Length(
+     *      min = 3,
+     *      max = 255,
+     *      minMessage = "La taille minimale est de {{ limit }} !",
+     *      maxMessage = "La taille maximale est de {{ limit }} !"
+     * )
      * @ORM\Column(name="name", type="string", length=255, nullable=false)
      */
     private $name;
 
     /**
      * @var string
-     *
+     * @Assert\Length(
+     *      min = 3,
+     *      max = 255,
+     *      minMessage = "La taille minimale est de {{ limit }} !",
+     *      maxMessage = "La taille maximale est de {{ limit }} !"
+     * )
      * @ORM\Column(name="description", type="string", length=255, nullable=false)
      */
     private $description;
 
     /**
      * @var \DateTime
-     *
+     * 
      * @ORM\Column(name="dateeventstart", type="datetime", nullable=false)
      */
     private $dateeventStart;
@@ -60,7 +72,12 @@ class TEvent
 
     /**
      * @var \DateTime
-     *
+     * @Assert\Range(
+     *      min = 0,
+     *      max = 255,
+     *      minMessage = "Le montant est de {{ limit }} € minimum !",
+     *      maxMessage = "Le montant est de {{ limit }} € maximum !"
+     * )
      * @ORM\Column(name="createddate", type="datetime", nullable=false, options={"default"="CURRENT_TIMESTAMP"})
      */
     private $createddate = 'CURRENT_TIMESTAMP';
