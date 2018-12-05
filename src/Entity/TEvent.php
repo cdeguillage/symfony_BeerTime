@@ -20,13 +20,14 @@ class TEvent
      * @var int
      *
      * @ORM\Column(name="idevent", type="integer", nullable=false)
-     * @ORM\Id
+     * @ORM\Id()
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $idevent;
 
     /**
      * @var string
+     * @Assert\NotBlank
      * @Assert\Length(
      *      min = 3,
      *      max = 255,
@@ -39,6 +40,7 @@ class TEvent
 
     /**
      * @var string
+     * @Assert\NotBlank
      * @Assert\Length(
      *      min = 3,
      *      max = 255,
@@ -51,40 +53,53 @@ class TEvent
 
     /**
      * @var \DateTime
-     * 
+     * @Assert\NotBlank
+     * @Assert\GreaterThanOrEqual("today")
      * @ORM\Column(name="dateeventstart", type="datetime", nullable=false)
      */
     private $dateeventStart;
 
     /**
      * @var \DateTime
-     *
+     * @Assert\NotBlank
+     * @Assert\GreaterThanOrEqual(propertyPath="dateeventstart")
      * @ORM\Column(name="dateeventend", type="datetime", nullable=false)
      */
     private $dateeventEnd;
 
     /**
      * @var string|null
-     *
+     * @Assert\GreaterThanOrEqual(0)
+     * @Assert\Type(type="float",
+     *              message="Simplement un nombre supérieur à 0 !"
+     * )
      * @ORM\Column(name="price", type="decimal", precision=5, scale=2, nullable=true, options={"default"="0.00"})
      */
     private $price = '0.00';
 
+    // /**
+    //  * @var \DateTime
+    //  * 
+    //  * @ORM\Column(name="createddate", type="datetime", nullable=false, options={"default"="CURRENT_TIMESTAMP"})
+    //  */
+    // private $createddate = date();
+
+    // * @ORM\JoinColumns({
+    // *   @ORM\JoinColumn(name="idaddress", referencedColumnName="idaddress")
+    // * })
+    
     /**
-     * @var \DateTime
-     * @Assert\Range(
-     *      min = 0,
-     *      max = 255,
-     *      minMessage = "Le montant est de {{ limit }} € minimum !",
-     *      maxMessage = "Le montant est de {{ limit }} € maximum !"
-     * )
-     * @ORM\Column(name="createddate", type="datetime", nullable=false, options={"default"="CURRENT_TIMESTAMP"})
-     */
-    private $createddate = 'CURRENT_TIMESTAMP';
+     * @var \TAddress
+     * @ORM\ManyToOne(targetEntity="App\Entity\TAddress")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="idaddress", referencedColumnName="idaddress")
+     * })
+     
+     +*/
+    private $TAddress;
 
     /**
      * @var \TAddress
-     *
      * @ORM\ManyToOne(targetEntity="App\Entity\TAddress")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="idaddress", referencedColumnName="idaddress")
@@ -94,8 +109,7 @@ class TEvent
 
     /**
      * @var \TUser
-     *
-     * @ORM\OneToOne(targetEntity="App\Entity\TUser", mappedBy="idusercreate")
+     * @ORM\ManyToOne(targetEntity="App\Entity\TUser")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="idusercreate", referencedColumnName="iduser")
      * })
@@ -103,17 +117,24 @@ class TEvent
     private $idusercreate;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="event", orphanRemoval=true)
+     * @var \TUser
+     * @ORM\ManyToOne(targetEntity="App\Entity\TUser")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="idusercreate", referencedColumnName="iduser")
+     * })
      */
-    private $comments;
+    private $TUser;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\TTags", mappedBy="event")
+     */
+    private $tags;
 
-    public function __construct()
-    {
-        $this->idaddress = new ArrayCollection();
-        $this->idusercreate = new ArrayCollection();
-        $this->comments = new ArrayCollection();
-    }
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\TParticipant", mappedBy="event")
+     */
+    private $participants;
+
 
     public function getIdevent(): ?int
     {
@@ -180,26 +201,38 @@ class TEvent
         return $this;
     }
 
-    public function getCreateddate(): ?\DateTimeInterface
+    // public function getCreateddate(): ?\DateTimeInterface
+    // {
+    //     return $this->createddate;
+    // }
+
+    // public function setCreateddate(\DateTimeInterface $createddate): self
+    // {
+    //     $this->createddate = $createddate;
+
+    //     return $this;
+    // }
+
+    public function getTAddress(): ?TAddress
     {
-        return $this->createddate;
+        return $this->$TAddress;
     }
 
-    public function setCreateddate(\DateTimeInterface $createddate): self
+    public function setTAddress(?TAddress $TAddress): self
     {
-        $this->createddate = $createddate;
+        $this->TAddress = $TAddress;
 
         return $this;
     }
 
-    public function getIdaddress(): ?TAddress
+    public function getTUser(): ?TUser
     {
-        return $this->idaddress;
+        return $this->TUser;
     }
 
-    public function setIdaddress(?TAddress $idaddress): self
+    public function setTUser(?TUser $TUser): self
     {
-        $this->idaddress = $idaddress;
+        $this->TUser = $TUser;
 
         return $this;
     }
@@ -216,31 +249,56 @@ class TEvent
         return $this;
     }
 
-    /**
-     * @return Collection|Comment[]
-     */
-    public function getComments(): Collection
+    public function getIdaddress(): ?TAddress
     {
-        return $this->comments;
+        return $this->idaddress;
     }
 
-    public function addComment(Comment $comment): self
+    public function setIdaddress(?TAddress $idaddress): self
     {
-        if (!$this->comments->contains($comment)) {
-            $this->comments[] = $comment;
-            $comment->setEvent($this);
+        $this->idaddress = $idaddress;
+
+        return $this;
+    }
+
+    // ////////////////////////////////
+    // DECLARATION DES COLLECTIONS
+    // ////////////////////////////////
+    public function __construct()
+    {
+        $this->tags = new ArrayCollection();
+        $this->participants = new ArrayCollection(); 
+    }
+
+    // ////////////////////////////////
+    // DEFINITION DES COLLECTIONS
+    // ////////////////////////////////
+
+    /**
+     * @return Collection|TParticipant[]
+     */
+    public function getParticipants(): Collection
+    {
+        return $this->participants;
+    }
+
+    public function addParticipant( TParticipant $participant ): self
+    {
+        if (!$this->participants->contains( $participant )) {
+            $this->participants[] = $participant;
+            $participant->setEvent($this);
         }
 
         return $this;
     }
 
-    public function removeComment(Comment $comment): self
+    public function removeParticipant( TParticipant $participant ): self
     {
-        if ($this->comments->contains($comment)) {
-            $this->comments->removeElement($comment);
+        if ($this->participants->contains( $participant )) {
+            $this->participants->removeElement( $participant );
             // set the owning side to null (unless already changed)
-            if ($comment->getEvent() === $this) {
-                $comment->setEvent(null);
+            if ($participant->getEvent() === $this) {
+                $participant->setEvent(null);
             }
         }
 

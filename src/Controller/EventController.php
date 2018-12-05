@@ -8,7 +8,11 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 use App\Entity\TEvent;
+use App\Entity\TUser;
+use App\Entity\TAddress;
+
 use App\Service\EventService;
+
 use App\Form\FCreateEventType;
 
 class EventController extends AbstractController
@@ -23,6 +27,10 @@ class EventController extends AbstractController
      */
     public function create( EventService $eventService, Request $request )
     {
+
+        $queryIdUserCreate = empty($request->query->get('idusercreate')) ? 1 : $request->query->get('idusercreate');
+        $queryIdAddress = empty($request->query->get('idaddress')) ? 12 : $request->query->get('idaddress');
+
         $event = new TEvent();
 
         $form = $this->createForm( FCreateEventType::class, $event );
@@ -31,14 +39,25 @@ class EventController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $event = $form->getData();
             
             // Save the datas
-            $om = $this->getDoctrine()->getManager();
-            $om->persist( $event );
-            $om->flush();
+            // $om = $this->getDoctrine()->getManager();
 
-            return $this->redirectToRoute('task_success');
+            $event = $form->getData();
+
+            // $iduser = $om->find( TUser::class, $queryIdUserCreate );
+            // $event->setTUser( $iduser );
+
+            // $idaddress = $om->find( TAddress::class, $queryIdAddress );
+            // $event->setTAddress( $idaddress );
+
+            // $om->persist( $event );
+            // $om->flush();
+
+            // Service
+            $eventService->add( $event );
+
+            return $this->redirectToRoute('list');
         }
 
         return $this->render('event/create.html.twig', [

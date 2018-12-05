@@ -16,7 +16,7 @@ class TAddress
 {
     /**
      * @var int
-     * @ORM\OneToMany(targetEntity="App\Entity\TEvent", mappedBy="idaddress")
+     * @ORM\OneToOne(targetEntity="App\Entity\TEvent", inversedBy="idaddress")
      * @ORM\Column(name="idaddress", type="integer", nullable=false)
      * @ORM\Id()
      * @ORM\GeneratedValue(strategy="IDENTITY")

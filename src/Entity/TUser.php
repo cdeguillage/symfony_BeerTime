@@ -6,6 +6,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
+// use App\Entity\TEvent;
+
 /**
  * TUser
  *
@@ -66,10 +68,22 @@ class TUser
      */
     private $connected = '0';
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\TEvent", mappedBy="idusercreate")
+     */
+    private $events;
 
-    public function __constructor() {
-        // 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\TParticipant", mappedBy="idevent,iduser,idtag")
+     */
+    // private $participants;
+
+
+    public function __construct() {
+        $this->events = new ArrayCollection();
+        $this->participants = new ArrayCollection();
     }
+
 
     public function getIduser(): ?int
     {
@@ -148,5 +162,62 @@ class TUser
         return $this;
     }
 
+    /**
+     * @return Collection|TEvent[]
+     */
+    public function getEvents(): Collection
+    {
+        return $this->events;
+    }
+
+    public function addEvent( TEvent $event ): self
+    {
+        if ( $this->events->contains( $event ))
+        {
+            $this->events[] = $event;
+            $event->setTUser( $this );
+        }
+    }
+
+    public function removeEvent( TEvent $event ): self
+    {
+        if ( $this->events->contains( $event ))
+        {
+            $this->removeElement( $event );
+            if ($event->getTUser() === $this)
+            {
+                $event->setTUser( null );
+            }
+        }
+    }
+
+    // /**
+    //  * @return Collection|TParticipant[]
+    //  */
+    // public function getParticipations(): Collection
+    // {
+    //     return $this->participations;
+    // }
+
+    // public function addParticipation( TParticipation $participation ): self
+    // {
+    //     if ( $this->participations->contains( $participation ))
+    //     {
+    //         $this->participations[] = $participation;
+    //         $event->setTUser( $this );
+    //     }
+    // }
+
+    // public function removeParticipation( TParticipation $participation ): self
+    // {
+    //     if ( $this->participations->contains( $participation ))
+    //     {
+    //         $this->removeElement( $participation );
+    //         if ($event->getTUser() === $this)
+    //         {
+    //             $event->setTUser( null );
+    //         }
+    //     }
+    // }
 
 }

@@ -4,6 +4,8 @@ namespace App\Service;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use App\Entity\TEvent;
+use App\Entity\TUser;
+use App\Entity\TAddress;
 
 class EventService {
 
@@ -82,6 +84,19 @@ class EventService {
     public function countPageForPagination() {
         $repo = $this->om->getRepository( TEvent::class );
         return $repo->countPageForPagination();
+    }
+
+    public function add( $event ) {
+        $repo = $this->om->getRepository( TUser::class );
+
+        $iduser = $om->find( TUser::class, 1 );
+        $event->setTUser( $iduser );
+
+        $idaddress = $om->find( TAddress::class, 1 );
+        $event->setTAddress( $idaddress );
+
+        $this->om->persist( $event );
+        $this->om->flush();
     }
 
 }

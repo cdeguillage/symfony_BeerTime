@@ -3,6 +3,8 @@
 namespace App\Form;
 
 use App\Entity\TEvent;
+use App\Entity\TUser;
+use App\Entity\TAddress;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -12,6 +14,8 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 
 class FCreateEventType extends AbstractType
 {
@@ -26,16 +30,25 @@ class FCreateEventType extends AbstractType
                                                 ))
             ->add('dateeventStart', DateTimeType::class, array( 'label' => 'Start date',
                                                   'required' => true,
+                                                  'widget' => 'single_text',
                                                 ))
             ->add('dateeventEnd', DateTimeType::class, array( 'label' => 'End date',
                                                   'required' => true,
+                                                  'widget' => 'single_text',
                                                 ))
-            ->add('price', null, array( 'label' => 'Entrance price',
-                                                  'data' => 0,
+            ->add('price', MoneyType::class, array( 'label' => 'Entrance price',
+                                                    'currency' => 'EUR',
+                                                    'data' => 0,
                                                 ))  
             // ->add('createddate', HiddenType::class, array( 'data' => new \DateTime(), ))
-            // ->add('idaddress', HiddenType::class, array( 'data' => null, ))
-            // ->add('idusercreate', HiddenType::class, array( 'data' => null, ))
+            ->add('idaddress', null, array( 'choice_label' => 'name',
+                                                            'class' => TAddress::class,
+                                                            'required' => true,
+                                                ))
+            ->add('idusercreate', null, array( 'choice_label' => 'username',
+                                                            'class' => TUser::class,
+                                                            'required' => true,
+                                                ))
         ;
     }
 
