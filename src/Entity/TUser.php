@@ -47,12 +47,12 @@ class TUser
      */
     private $email;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="createddate", type="datetime", nullable=false, options={"default"="CURRENT_TIMESTAMP"})
-     */
-    private $createddate = 'CURRENT_TIMESTAMP';
+    // /**
+    //  * @var \DateTime
+    //  *
+    //  * @ORM\Column(name="createddate", type="datetime", nullable=false, options={"default"="CURRENT_TIMESTAMP"})
+    //  */
+    // private $createddate;
 
     /**
      * @var array
@@ -73,15 +73,15 @@ class TUser
      */
     private $events;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\TParticipant", mappedBy="idevent,iduser,idtag")
-     */
+    // /**
+    //  * @ORM\OneToMany(targetEntity="App\Entity\TParticipant", mappedBy="idevent,iduser,idtag")
+    //  */
     // private $participants;
 
 
     public function __construct() {
         $this->events = new ArrayCollection();
-        $this->participants = new ArrayCollection();
+        // $this->participants = new ArrayCollection();
     }
 
 
@@ -126,17 +126,17 @@ class TUser
         return $this;
     }
 
-    public function getCreateddate(): ?\DateTimeInterface
-    {
-        return $this->createddate;
-    }
+    // public function getCreateddate(): ?\DateTimeInterface
+    // {
+    //     return $this->createddate;
+    // }
 
-    public function setCreateddate(\DateTimeInterface $createddate): self
-    {
-        $this->createddate = $createddate;
+    // public function setCreateddate(\DateTimeInterface $createddate): self
+    // {
+    //     $this->createddate = $createddate;
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
     public function getRoles(): ?array
     {

@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() }}
+{% endblock %}
+
+{% block displayArray %}
+
+    <br/><br/>
+    <h4>{{ title }}</h4>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-1">{{ id }}</div>
+        </div>
+        <div class="row">
+            <div class="col-1">{{ user.username }}</div>
+        </div>
+        <div class="row">
+            <div class="col-1">{{ user.password }}</div>
+        </div>
+        <div class="row">
+            <div class="col-1">{{ user.email }}</div>
+        </div>
+        {# <div class="row">
+            <div class="col-1">{{ user.roles }}</div>
+        </div> #}
+    </div>
+
+{% endblock %}

@@ -12,7 +12,7 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
 class TEventRepository extends ServiceEntityRepository
 {
 
-    const MAX_ITEMS_PER_PAGE = 2;
+    const MAX_ITEMS_PER_PAGE = 5;
 
     public function __construct(RegistryInterface $registry)
     {
@@ -73,8 +73,15 @@ class TEventRepository extends ServiceEntityRepository
             ->getSingleScalarResult();
     }
 
+    public function counterAll() {
+        return $this->createQueryBuilder( 'e' )
+            ->select( 'count(e)' )
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
     public function countPageForPagination() {
-        return round( $this->counter() / self::MAX_ITEMS_PER_PAGE ) + 1;
+        return round( $this->counterAll() / self::MAX_ITEMS_PER_PAGE ) + 1;
     }
 
 }

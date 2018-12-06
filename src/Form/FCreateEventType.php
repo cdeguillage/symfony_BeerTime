@@ -16,6 +16,7 @@ use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 
 class FCreateEventType extends AbstractType
 {
@@ -28,6 +29,11 @@ class FCreateEventType extends AbstractType
             ->add('description', TextareaType::class, array( 'label' => 'Description',
                                                   'required' => true,
                                                 ))
+            // ->add('poster', TextType::class, array( 'label' => 'Poster',
+            //                                       'required' => true,
+            //                                     ))
+            ->add('posterurl')
+            ->add('posterfile', FileType::class)
             ->add('dateeventStart', DateTimeType::class, array( 'label' => 'Start date',
                                                   'required' => true,
                                                   'widget' => 'single_text',

@@ -7,5 +7,12 @@
     <h4>{{ title }}</h4>
 
     <p>Evénement ID : {{ eventid }} </p>
+    <p>Nom : {{ event.name }} </p>
+    <p>Description : {{ event.description }} </p>
+    <p>Date début : {{ event.dateeventstart|date("m/d/Y") }} </p>
+    <p>Date fin   : {{ event.dateeventend|date("m/d/Y") }} </p>
+    <p>Poster : {{ event.poster }} </p>
+    <p>Prix : {{ event.price }} </p>
+    <p>Adresse : {{ event.idaddress.name }} </p>
 
 {% endblock %}

@@ -10,7 +10,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * TEvent
- *
+ * @Assert\Expression(
+ *      "this.getPosterurl() or this.getPosterfile()",
+ *      message="Vous devez saisir une URL ou charger une image !"
+ * )
  * @ORM\Table(name="t_event", indexes={@ORM\Index(name="fk_t_event_t_address", columns={"idaddress"}), @ORM\Index(name="fk_t_event_t_user1", columns={"idusercreate"})})
  * @ORM\Entity(repositoryClass="App\Repository\TEventRepository")
  */
@@ -77,6 +80,26 @@ class TEvent
      */
     private $price = '0.00';
 
+    /**
+     * @var string|null
+     * @ORM\Column(name="poster", type="string", nullable=true)
+     */
+    private $poster;
+
+    /**
+     * @var string|null
+     * @Assert\Url
+     */
+    private $posterurl;
+
+    // En accord avec le PHP.ini !!!
+    /**
+     * @Assert\Image(
+     *      maxSize = "2048k"
+     * )
+     */
+    private $posterfile;
+
     // /**
     //  * @var \DateTime
     //  * 
@@ -94,8 +117,7 @@ class TEvent
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="idaddress", referencedColumnName="idaddress")
      * })
-     
-     +*/
+     */
     private $TAddress;
 
     /**
@@ -185,6 +207,42 @@ class TEvent
     public function setDateeventEnd(\DateTimeInterface $dateeventEnd): self
     {
         $this->dateeventEnd = $dateeventEnd;
+
+        return $this;
+    }
+
+    public function getPoster()
+    {
+        return $this->poster;
+    }
+
+    public function setPoster($poster): self
+    {
+        $this->poster = $poster;
+
+        return $this;
+    }
+
+    public function getPosterurl()
+    {
+        return $this->posterurl;
+    }
+
+    public function setPosterurl($posterurl): self
+    {
+        $this->posterurl = $posterurl;
+
+        return $this;
+    }
+
+    public function getPosterfile()
+    {
+        return $this->posterfile;
+    }
+
+    public function setPosterfile($posterfile): self
+    {
+        $this->posterfile = $posterfile;
 
         return $this;
     }

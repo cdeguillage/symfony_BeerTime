@@ -17,20 +17,11 @@ use App\Form\FCreateEventType;
 
 class EventController extends AbstractController
 {
-
-    // private function createView() {
-    //     return 'Rien';
-    // }
-
     /**
      * @Route("/event/create", name="create")
      */
     public function create( EventService $eventService, Request $request )
     {
-
-        $queryIdUserCreate = empty($request->query->get('idusercreate')) ? 1 : $request->query->get('idusercreate');
-        $queryIdAddress = empty($request->query->get('idaddress')) ? 12 : $request->query->get('idaddress');
-
         $event = new TEvent();
 
         $form = $this->createForm( FCreateEventType::class, $event );
@@ -57,7 +48,7 @@ class EventController extends AbstractController
             // Service
             $eventService->add( $event );
 
-            return $this->redirectToRoute('list');
+            return $this->redirectToRoute('show', [ 'id' => $event->getIdevent() ]);
         }
 
         return $this->render('event/create.html.twig', [
@@ -110,4 +101,5 @@ class EventController extends AbstractController
             'event' => $eventService->getOne( $id ),
         ]);
     }
+
 }

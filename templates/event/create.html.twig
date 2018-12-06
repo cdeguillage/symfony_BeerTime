@@ -6,12 +6,28 @@
 {% block displayArray %}
     <h4>{{ title }}</h4>
 
-    {{ form_start ( form ) }}
+    {# Evite les erreurs avec Chrome (laisse le navigateur gérer ou alors il faut s'occuper de toutes les erreurs) #}
+    {{ form_start ( form, { 'attr' : {'novalidate' : 'novalidate'} } ) }}
     {# {{ form_widget ( form ) }} #}
     <div class="container">
         <div class="row text-center">
             <div class="col-6">
                 {{ form_row ( form.name ) }}
+            </div>
+        </div>
+        {# <div class="row text-center">
+            <div class="col-6">
+                {{ form_row ( form.poster ) }}
+            </div>
+        </div> #}
+        <div class="row text-center">
+            <div class="col-6">
+                {{ form_row ( form.posterurl ) }}
+            </div>
+        </div>
+        <div class="row text-center">
+            <div class="col-6">
+                {{ form_row ( form.posterfile ) }}
             </div>
         </div>
         <div class="row text-center">
