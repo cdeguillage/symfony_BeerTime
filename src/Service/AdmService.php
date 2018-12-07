@@ -54,6 +54,9 @@ class AdmService {
     // }
 
     public function add( $user ) {
+        // On crypte le mot de passe
+        $user->setPassword( password_hash( $user->getPassword(), PASSWORD_BCRYPT ) );
+
         $repo = $this->om->getRepository( TUser::class );
 
         $this->om->persist( $user );
@@ -65,17 +68,28 @@ class AdmService {
         return $repo->findAll();
     }
 
-    public function getOne( $id ) {
+    public function getOneId( $id ) {
         $repo = $this->om->getRepository( TUser::class );
         return $repo->find( $id );
     }
 
+    public function isUsernameExist( $username ) {
+        $repo = $this->om->getRepository( TUser::class );
+
+        return ( !empty( $repo->findBy( array( 'username' => $username ) )[0]->getUsername() ) );
+    }
+
+    public function getPassword( $username ) {
+        $repo = $this->om->getRepository( TUser::class );
+
+        return $repo->findBy( array( 'username' => $username ) )[0]->getPassword();
+    }
+
     public function isConnected( $user ) {
-        $repo = $this->om->getRepository( TUser::class )
-                         ->findBy( array( 'username' => $user->getUsername(),
-                                          'password' => $user->getPassword()
-                                        ) );
-        return (!empty( $repo ));
+        $user_password = $user->getPassword();
+        $bdd_password = $this->getPassword( $user->getUsername() );
+
+        return ( password_verify( $user_password, $bdd_password ) );
     }
 
 }

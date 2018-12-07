@@ -30,11 +30,19 @@
                     <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Chercher</button>
                 </form>
                 <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                {# S'inscrire #}
-                <a class="btn btn-outline-success bg-success text-warning my-2 my-sm-0" href="{{ path('inscribe') }}">S'inscrire</a>
-                <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                {# Se connecter #}
-                <a class="btn btn-outline-success bg-success text-warning my-2 my-sm-0" href="{{ path('connect') }}">Se connecter</a>
+
+                {% if app.user.connected %}
+                    <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                    <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                    {# Connecté #}
+                    <span>Bienvenue {{ app.user.username }} !</span>
+                {% else %}
+                    {# S'inscrire #}
+                    <a class="btn btn-outline-success bg-success text-warning my-2 my-sm-0" href="{{ path('register') }}">S'inscrire</a>
+                    <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                    {# Se connecter #}
+                    <a class="btn btn-outline-success bg-success text-warning my-2 my-sm-0" href="{{ path('login') }}">Se connecter</a>
+                {% endif %}
             </nav>
         {% endblock %}
 

@@ -6,24 +6,26 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+use Symfony\Component\Security\Http\Authentication\UserPasswordEncoderInterface;
 
 use App\Entity\TUser;
 
 use App\Service\AdmService;
 
-use App\Form\FConnectType;
-use App\Form\FInscribeType;
+use App\Form\FLoginType;
+use App\Form\FRegisterType;
 
 class AdmController extends AbstractController
 {
     /**
-     * @Route("/adm/connect", name="connect")
+     * @Route("/adm/login", name="login")
      */
-    public function connect(Request $request, AdmService $admService )
+    public function login(Request $request, AdmService $admService, AuthenticationUtils $authenticationUtils )
     {
         $user = new TUser();
 
-        $form = $this->createForm( FConnectType::class, $user );
+        $form = $this->createForm( FLoginType::class, $user );
 
         // Contrôle les @Assert dans l'entité
         $form->handleRequest($request);
@@ -34,33 +36,38 @@ class AdmController extends AbstractController
 
             // Service
             if ( $admService->isConnected( $user ) ) {
+                $user->setConnected('1');
                 return $this->redirectToRoute('list');
             } else {
                 return $this->redirectToRoute('connect');
             };
         }
 
-        return $this->render('adm/connect.html.twig', [
+        return $this->render('adm/login.html.twig', [
             'title' => 'Se connecter',
+            'lastUsername' => $authenticationUtils->getLastUsername(),
             'form' => $form->createView(),
         ]);
     }
 
     /**
-     * @Route("/adm/inscribe", name="inscribe")
+     * @Route("/adm/register", name="register")
      */
-    public function inscribe(Request $request, AdmService $admService )
+    public function register(Request $request, AdmService $admService /*, UserPasswordEncoderInterface $encoder*/ )
     {
         $user = new TUser();
 
-        $form = $this->createForm( FInscribeType::class, $user );
+        $form = $this->createForm( FRegisterType::class, $user );
 
         // Contrôle les @Assert dans l'entité
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            
+
             $user = $form->getData();
+            $user->setRoles( ['ROLE_USER'] );
+            // $encoded = $encoder->encodePassword( $user->getPlainPassword() );
+            // $user->setPassword( $encoded );
 
             // Service
             $admService->add( $user );
@@ -68,7 +75,7 @@ class AdmController extends AbstractController
             return $this->redirectToRoute('account', [ 'id' => $user->getIduser() ]);
         }
 
-        return $this->render('adm/inscribe.html.twig', [
+        return $this->render('adm/register.html.twig', [
             'title' => 'S\'inscrire',
             'form' => $form->createView(),
         ]);
@@ -86,5 +93,13 @@ class AdmController extends AbstractController
             'user' => $admService->getOne( $id ),
         ]);
     }
+
+    /**
+     * @Route("/adm/logout", name="logout")
+     */
+    public function logout() {
+        $user->setConnected('0');
+    }
+
 
 }

@@ -6,6 +6,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
+use Symfony\Component\Security\Core\User\UserInterface;
+
 // use App\Entity\TEvent;
 
 /**
@@ -14,7 +16,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="t_user")
  * @ORM\Entity(repositoryClass="App\Repository\TUserRepository")
  */
-class TUser
+class TUser implements UserInterface
 {
     /**
      * @var int
@@ -39,6 +41,13 @@ class TUser
      * @ORM\Column(name="password", type="string", length=255, nullable=false)
      */
     private $password;
+
+    /**
+     * @var string
+     *
+     */
+    private $plainpassword;
+
 
     /**
      * @var string
@@ -113,6 +122,19 @@ class TUser
 
         return $this;
     }
+
+    public function getPlainPassword(): ?string
+    {
+        return $this->plainpassword;
+    }
+
+    public function setPlainPassword(string $plainpassword): self
+    {
+        $this->plainpassword = $plainpassword;
+
+        return $this;
+    }
+
 
     public function getEmail(): ?string
     {
@@ -219,5 +241,11 @@ class TUser
     //         }
     //     }
     // }
+
+    public function eraseCredentials() {}
+
+    public function getSalt() {
+        return null;
+    }
 
 }

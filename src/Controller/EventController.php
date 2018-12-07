@@ -7,6 +7,9 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+
 use App\Entity\TEvent;
 use App\Entity\TUser;
 use App\Entity\TAddress;
@@ -91,11 +94,12 @@ class EventController extends AbstractController
     }
 
     /**
+     * @IsGranted("ROLE_USER")
      * @Route("/event/{id}/join", name="join", requirements={"id"="\d+"})
      */
     public function join( EventService $eventService, string $id )
     {
-        return $this->render('event/show.html.twig', [
+        return $this->render('event/join.html.twig', [
             'title' => 'Rejoindre un événement',
             'eventid' => $id,
             'event' => $eventService->getOne( $id ),

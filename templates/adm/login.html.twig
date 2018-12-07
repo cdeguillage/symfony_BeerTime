@@ -8,6 +8,7 @@
     <br /><br />
     <h4>{{ title }}</h4>
 
+    {# METHODE PHP #}
     {{ form_start ( form ) }}
     <div class="container">
         <div class="row">
@@ -27,5 +28,12 @@
         </div>
     </div>
     {{ form_end ( form ) }}
+
+    {# METHODE YAML #}
+    {# <form action="{{ path('login') }}" method="post"> #}
+        {# <input type="text" placeholder="Nom d'utilisateur" name="_username" value="{{ lastUsername }}"> #}
+        {# <input type="password" placeholder="Mot de passe" name="_password"> #}
+        {# <button type="sunmit">Connexion</button> #}
+    {# </form> #}
 
 {% endblock %}
